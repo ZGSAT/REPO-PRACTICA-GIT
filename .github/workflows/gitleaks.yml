@@ -18,9 +18,12 @@ jobs:
       - name: Checkout del repositorio
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Trae todo el historial
+          fetch-depth: 0
 
-      - name: Ejecutar Gitleaks Completo
+      - name: Ejecutar Gitleaks Exhaustivo
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Forzar a buscar en todo el directorio actual en vez de solo el último commit
+        with:
+          args: dir --verbose .
