@@ -8,8 +8,7 @@ on:
 
 jobs:
   gitleaks:
-    runs-on: ubuntu-latest
-    # Permisos requeridos para que el token funcione correctamente con la API de GitHub
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       security-events: write
@@ -19,10 +18,9 @@ jobs:
       - name: Checkout del repositorio
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Trae todo el historial
 
-      - name: Ejecutar Gitleaks
+      - name: Ejecutar Gitleaks Completo
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
