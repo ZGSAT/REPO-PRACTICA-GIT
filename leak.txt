@@ -1,2 +1,2 @@
 github_token = "ghp_1234567890abcdefghijklmnopqrstuvwxyzABCD"
-
+AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
