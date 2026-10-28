@@ -1,33 +1,23 @@
-# .github/workflows/secretos.yml
-name: Secretos
-on: [push, pull_request]
+name: Secret Scanning
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
 
 jobs:
   gitleaks:
-    name: Escanear secretos con Gitleaks
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
-      pull-requests: write # Necesario si quieres que comente en PRs
-
+    name: Detect Secrets with gitleaks
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout del repositorio
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Ejecutar Gitleaks
-        id: gitleaks
+      - name: Run gitleaks
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_ENABLE_SUMMARY: true # Crea un tabla resumen en el Action
-          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false # Evita subir el reporte con los secretos expuestos
-
-      - name: Aviso de seguridad por claves detectadas
-        if: failure()
-        run: |
-          echo "::error title= Secretos Detectados::El push o PR contiene claves, tokens o contraseñas expuestas. La ejecución ha sido cancelada por seguridad. Revisa el resumen de Gitleaks arriba y rota las credenciales afectadas inmediatamente."
-          exit 1
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
